@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --bolt-blue: #004E89;
+  --bolt-dark: #003d6b;
+  --bolt-orange: #FF6D38;
+}
+
+body {
+  background-color: white;
+  color: #0f172a; /* slate-900 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .search-shadow {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

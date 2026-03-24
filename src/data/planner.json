@@ -1,0 +1,26 @@
+{
+  "hero": {
+    "title": "Plan Your Trip In 3 Easy Steps!",
+    "subtitle": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+    "buttonText": "Plan your trip",
+    "images": [
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518107616385-bd2f836c3a3a?q=80&w=600&auto=format&fit=crop"
+    ]
+  },
+  "steps": [
+    {
+      "title": "Choose Destination",
+      "description": "Select from over 100+ locations."
+    },
+    {
+      "title": "Book Your Dates",
+      "description": "Flexible booking with secure payments."
+    },
+    {
+      "title": "Enjoy Your Trip",
+      "description": "Pack your bags and fly away!"
+    }
+  ]
+}

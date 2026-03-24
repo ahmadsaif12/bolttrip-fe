@@ -1,0 +1,61 @@
+{
+  "admin": {
+    "user": {
+      "name": "Yubraj Khadka",
+      "image": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=100&auto=format&fit=crop"
+    },
+    "stats": [
+      { "label": "Total Booking", "value": "1250", "trend": "+2.89%", "trendUp": true },
+      { "label": "Total New Customers", "value": "1250", "trend": "-1.89%", "trendUp": false },
+      { "label": "Total Earnings", "value": "2503", "trend": "+3.99%", "trendUp": true }
+    ],
+    "revenueData": [
+      { "month": "Jan", "revenue": 25000 },
+      { "month": "Feb", "revenue": 45000 },
+      { "month": "Mar", "revenue": 35000 },
+      { "month": "Apr", "revenue": 85000 },
+      { "month": "May", "revenue": 40000 },
+      { "month": "Jun", "revenue": 30000 },
+      { "month": "Jul", "revenue": 75000 },
+      { "month": "Aug", "revenue": 55000 }
+    ],
+    "tripOverview": {
+      "total": "2,839",
+      "segments": [
+        { "label": "Cancelled", "value": "6.5%" },
+        { "label": "Booked", "value": "26.5%" },
+        { "label": "Done", "value": "67%" }
+      ]
+    }
+  },
+  "operations": {
+    "overview": [
+      { "label": "Check-in", "value": "25", "tag": "Today's" },
+      { "label": "Check-out", "value": "15", "tag": "Today's" },
+      { "label": "In hotel", "value": "70", "tag": "Total" },
+      { "label": "Available room", "value": "15", "tag": "Total" },
+      { "label": "Occupied room", "value": "95", "tag": "Total" }
+    ],
+    "rooms": [
+      { "type": "Single sharing", "count": "2/30", "price": "$ 568", "deals": "2 Deals" },
+      { "type": "Double sharing", "count": "2/35", "price": "$ 1,068", "deals": "2 Deals" },
+      { "type": "Triple sharing", "count": "2/25", "price": "$ 1,568", "deals": "0 Deals" },
+      { "type": "VIP Suit", "count": "4/10", "price": "$ 2,568", "deals": "0 Deals" }
+    ]
+  },
+  "packages": [
+    { "id": "PKG001", "name": "Spanish Wonder", "destination": "Madrid, Spain", "price": "$2,430", "duration": "9 Days", "status": "Active" },
+    { "id": "PKG002", "name": "Europe Taster", "destination": "Paris, France", "price": "$2,430", "duration": "9 Days", "status": "Active" },
+    { "id": "PKG003", "name": "Swiss Alps Magic", "destination": "Zurich, Switzerland", "price": "$3,100", "duration": "7 Days", "status": "Inactive" }
+  ],
+  "bookings": [
+    { "id": "BK001", "customer": "Yubraj Khadka", "package": "Spanish Wonder", "date": "2025-04-12", "amount": "$2,430", "status": "Confirmed" },
+    { "id": "BK002", "customer": "Saif Ali", "package": "Europe Taster", "date": "2025-04-15", "amount": "$2,430", "status": "Pending" },
+    { "id": "BK003", "customer": "John Doe", "package": "Swiss Alps", "date": "2025-04-20", "amount": "$3,100", "status": "Cancelled" }
+  ],
+  "travelers": [
+    { "id": "TR001", "name": "Yubraj Khadka", "email": "yubraj@example.com", "bookings": 12, "status": "Diamond" },
+    { "id": "TR002", "name": "Saif Ali", "email": "saif@example.com", "bookings": 5, "status": "Gold" },
+    { "id": "TR003", "name": "Alice Smith", "email": "alice@example.com", "bookings": 2, "status": "Silver" }
+  ]
+}

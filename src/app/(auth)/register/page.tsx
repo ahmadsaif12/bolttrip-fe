@@ -1,130 +1,185 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { User, Mail, Lock, ArrowRight, Phone } from "lucide-react";
+import { useRegister } from "@/features/auth/hooks/Useauth";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
-    username: "",
+    first_name: "",
+    last_name: "",
     email: "",
+    phone_number: "",
     password: "",
+    re_password: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const registerMutation = useRegister();
+  const router = useRouter();
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Registration failed");
-
-      // Sign in automatically after successful registration
-      await signIn("credentials", {
-        redirect: true,
-        email: formData.email,
-        password: formData.password,
-        callbackUrl: "/",
-      });
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (formData.password !== formData.re_password) {
+      setErrorMsg("Passwords do not match");
+      return;
     }
+    
+    registerMutation.mutate(formData as any, {
+      onSuccess: () => {
+        router.push("/login?registered=true");
+      },
+      onError: (err: any) => {
+        setErrorMsg(err.message || "Failed to register account.");
+      }
+    });
   };
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="max-w-md w-full bg-white rounded-[40px] p-10 shadow-2xl border border-gray-100 text-center">
-        <div className="mb-10">
-          <h2 className="text-3xl font-black text-[#004E8C] tracking-tight">Create Account</h2>
-          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">
-            Start your journey with BoltTrip
-          </p>
-        </div>
-
-        {error && (
-          <div className="mb-6 w-full p-4 bg-red-50 text-red-600 text-xs font-bold rounded-2xl border border-red-100 text-left">
-            ⚠️ {error}
-          </div>
-        )}
-
-        <form onSubmit={handleRegister} className="flex flex-col gap-4 w-full text-left">
-          <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-4">Username</label>
-            <input
-              type="text"
-              placeholder="johndoe123"
-              value={formData.username}
-              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-              required
-              className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-[20px] outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-4">Email Address</label>
-            <input
-              type="email"
-              placeholder="name@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-              className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-[20px] outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-4">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              required
-              className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-[20px] outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-5 bg-[#004E8C] text-white rounded-[20px] font-black uppercase tracking-widest hover:bg-[#003d6e] transition-all disabled:opacity-50 mt-4 shadow-lg shadow-blue-900/20"
-          >
-            {loading ? "Registering..." : "Create Account"}
-          </button>
-        </form>
-
-        <div className="relative my-8">
-          <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-gray-100"></span></div>
-          <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
-            <span className="bg-white px-4 text-gray-300">Or</span>
-          </div>
-        </div>
-
-        <button 
-          onClick={() => signIn("google")}
-          className="w-full flex items-center justify-center gap-3 py-4 px-6 border-2 border-gray-50 rounded-[20px] hover:bg-gray-50 transition-all font-bold text-gray-700"
-        >
-          <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-          Continue with Google
-        </button>
-
-        <p className="mt-8 text-sm font-bold text-gray-500">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-[#111827]">
+          Join BOLT Trip
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#004E8C] hover:underline ml-1">
-            Sign In
+          <Link href="/login" className="font-medium text-[#FF6D38] hover:text-[#e05b2a]">
+            Sign in
           </Link>
         </p>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
+        <div className="bg-white py-10 px-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:rounded-[30px] sm:px-10 border border-gray-100">
+          <form className="space-y-6" onSubmit={handleRegister}>
+            {errorMsg && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-xl text-sm font-medium border border-red-100">
+                {errorMsg}
+              </div>
+            )}
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">First Name</label>
+                <div className="mt-2 relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <User size={18} />
+                  </div>
+                  <input
+                    name="first_name"
+                    type="text"
+                    required
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Last Name</label>
+                <div className="mt-2 relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <User size={18} />
+                  </div>
+                  <input
+                    name="last_name"
+                    type="text"
+                    required
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Email address</label>
+              <div className="mt-2 relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Mail size={18} />
+                </div>
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+              <div className="mt-2 relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <Phone size={18} />
+                </div>
+                <input
+                  name="phone_number"
+                  type="tel"
+                  required
+                  value={formData.phone_number}
+                  onChange={handleChange}
+                  className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <div className="mt-2 relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <Lock size={18} />
+                  </div>
+                  <input
+                    name="password"
+                    type="password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <div className="mt-2 relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <Lock size={18} />
+                  </div>
+                  <input
+                    name="re_password"
+                    type="password"
+                    required
+                    value={formData.re_password}
+                    onChange={handleChange}
+                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={registerMutation.isPending}
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-[#FF6D38] hover:bg-[#e05b2a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6D38] transition-colors disabled:opacity-75 mt-6"
+              >
+                {registerMutation.isPending ? "Creating account..." : "Register"}
+                {!registerMutation.isPending && <ArrowRight size={18} className="ml-2" />}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

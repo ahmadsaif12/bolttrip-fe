@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "backgroundImage": "https://images.unsplash.com/photo-1530789253388-582c481c54b0?q=80&w=2070&auto=format&fit=crop",
+    "title": "Unforgettable Activities",
+    "subtitle": "From high-altitude trekking to serene lake rowing, discover the best activities for your next adventure."
+  },
+  "categories": [
+    { "name": "Adventure", "icon": "Zap" },
+    { "name": "Nature", "icon": "Leaf" },
+    { "name": "Culture", "icon": "Globe" },
+    { "name": "Water", "icon": "Waves" }
+  ],
+  "items": [
+    {
+      "title": "Paragliding in Pokhara",
+      "image": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=800&auto=format&fit=crop",
+      "price": "$120",
+      "duration": "30 mins",
+      "rating": 4.9
+    },
+    {
+      "title": "Bungy Jumping",
+      "image": "https://images.unsplash.com/photo-1509233725247-49e657c54213?q=80&w=800&auto=format&fit=crop",
+      "price": "$90",
+      "duration": "1 hour",
+      "rating": 4.8
+    },
+    {
+      "title": "Rafting in Trisuli",
+      "image": "https://images.unsplash.com/photo-1530789253388-582c481c54b0?q=80&w=800&auto=format&fit=crop",
+      "price": "$70",
+      "duration": "Full Day",
+      "rating": 4.7
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "hero": {
+    "backgroundImage": "https://images.unsplash.com/photo-1551632432-c73dbfe1a43c?q=80&w=2070&auto=format&fit=crop",
+    "title": "Professional Travel Guides",
+    "subtitle": "Our experienced guides will help you navigate the most beautiful landscapes and hidden gems."
+  },
+  "guides": [
+    {
+      "name": "Ram Bahadur",
+      "specialty": "Trekking Expert",
+      "experience": "10+ Years",
+      "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop",
+      "rating": 5.0
+    },
+    {
+      "name": "Sita Kumari",
+      "specialty": "Cultural Guide",
+      "experience": "8 Years",
+      "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop",
+      "rating": 4.9
+    },
+    {
+      "name": "Hari Prasad",
+      "specialty": "City Explorer",
+      "experience": "12 Years",
+      "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
+      "rating": 4.8
+    }
+  ],
+  "services": [
+    { "title": "Mountain Trekking", "description": "Expert navigation in the Himalayas." },
+    { "title": "City Day Tours", "description": "Discover history and architecture." },
+    { "title": "Photography Tours", "description": "Capture the best moments." }
+  ]
+}

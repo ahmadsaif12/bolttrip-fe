@@ -1,0 +1,39 @@
+{
+  "hero": {
+    "title": "Catch Flights, Not Feelings",
+    "subtitle": "The world is calling — book your seat and let the journey begin. We'll handle the rest!",
+    "buttonText": "Book Now",
+    "images": [
+      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1542839953-27aa348e3d64?auto=format&fit=crop&w=500&q=80",
+      "https://images.unsplash.com/photo-1517400508447-f8dd518b86db?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1521406606085-f1ba55c5e884?auto=format&fit=crop&w=600&q=80"
+    ]
+  },
+  "tourTypes": [
+    { "title": "Adventure", "iconColor": "text-orange-500", "iconId": "adventure", "path": "M4 14l8-4 8 4M12 21V10M12 21a9 9 0 01-9-9c0-5 4-9 9-9" },
+    { "title": "City Tour", "iconColor": "text-orange-500", "iconId": "city", "path": "M3 21h18M5 21V7l8-4v18M13 3v18M5 11h8M5 15h8" },
+    { "title": "Cruses Tour", "iconColor": "text-blue-500", "iconId": "cruise", "path": "M9 13l3 3 6-6M5 20c2 0 4-1 6-1s4 1 6 1 4-1 6-1" },
+    { "title": "See Tour", "iconColor": "text-blue-500", "iconId": "sea", "path": "M2 20c2 0 4-1 6-1s4 1 6 1 4-1 6-1" },
+    { "title": "Travel", "iconColor": "text-blue-500", "iconId": "travel", "path": "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" }
+  ],
+  "faqs": [
+    {
+      "question": "What do I need to know before booking a flight?",
+      "answer": "There are various factors to consider when booking a flight including cost, fare classes, baggage policies, the complications of flying long haul, and complying with airport regulations. To make your booking journey including insights on finding affordable flights, packing efficiently, and utilizing the best travel tools."
+    },
+    {
+      "question": "Which month of the year are flight prices lowest?",
+      "answer": "Generally, January and February are the cheapest months to fly as demand drops after the holiday season."
+    },
+    {
+      "question": "What is the cheapest day of the week to book a flight?",
+      "answer": "Tuesdays and Wednesdays are generally the cheapest days to fly, especially for domestic routes."
+    },
+    {
+      "question": "When is the best time to buy plane tickets - Last minute or in advance?",
+      "answer": "Booking in advance usually guarantees a better rate and more choices. Last-minute deals are rare and risky."
+    }
+  ]
+}

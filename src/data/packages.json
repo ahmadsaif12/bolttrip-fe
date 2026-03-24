@@ -1,0 +1,102 @@
+{
+  "hero": {
+    "backgroundImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop",
+    "title": "We Find The Best Tours For You",
+    "subtitle": "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+    "watchVideo": "Watch Video"
+  },
+  "topDestinations": {
+    "title": "Top Selling",
+    "heading": "Top Destinations",
+    "categories": ["Popular", "USA", "Europe", "Asia", "Africa & Middle East", "Canada", "Kathmandu"],
+    "items": [
+      {
+        "name": "Kathmandu",
+        "image": "https://images.unsplash.com/photo-1549117121-48359e2c943c?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "Patan",
+        "image": "https://images.unsplash.com/photo-1528642463367-1798df634f19?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "Bhaktapur",
+        "image": "https://images.unsplash.com/photo-1544253134-2d083437e6da?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "name": "Pokhara",
+        "image": "https://images.unsplash.com/photo-1518107616385-bd2f836c3a3a?q=80&w=800&auto=format&fit=crop"
+      }
+    ]
+  },
+  "topValues": {
+    "tagline": "What we serve",
+    "heading": "Top Values For You",
+    "description": "Discover More, Book Smarter, Travel Freer.",
+    "items": [
+      {
+        "title": "Lot of choices",
+        "description": "Discover More, Book Smarter, Travel Freer.",
+        "icon": "MapPin"
+      },
+      {
+        "title": "Best Tour Guide",
+        "description": "Discover More, Book Smarter, Travel Freer.",
+        "icon": "ShieldCheck"
+      },
+      {
+        "title": "Easy Booking",
+        "description": "Discover More, Book Smarter, Travel Freer.",
+        "icon": "CreditCard"
+      }
+    ]
+  },
+  "travelPackages": {
+    "tagline": "CHOOSE YOUR NEXT DESTINATION",
+    "heading": "Travel Packages",
+    "items": [
+      {
+        "title": "Spanish Wonder (End Barcelona)",
+        "location": "Barcelona, Spain.",
+        "duration": "9 Days",
+        "rating": 5,
+        "oldPrice": "$2700",
+        "newPrice": "$2430",
+        "image": "https://images.unsplash.com/photo-1543783232-f38308472b35?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Europe Taster",
+        "location": "Barcelona, Spain.",
+        "duration": "9 Days",
+        "rating": 5,
+        "oldPrice": "$2700",
+        "newPrice": "$2430",
+        "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        "title": "Spanish Wonder (End Barcelona)",
+        "location": "Barcelona, Spain.",
+        "duration": "9 Days",
+        "rating": 5,
+        "oldPrice": "$2700",
+        "newPrice": "$2430",
+        "image": "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?q=80&w=800&auto=format&fit=crop"
+      }
+    ]
+  },
+  "promotionalBanner": {
+    "backgroundImage": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=2070&auto=format&fit=crop",
+    "title": "Grab up to 30% off on your favorite Destination",
+    "subtitle": "Your Next Trip Just Got Cheaper, Book Now!",
+    "buttonText": "BOOK NOW"
+  },
+  "ourOffers": {
+    "heading": "Our Offers",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Vivamus interdum, nunc sed dapibus suscipit, sapien erat accumsan lorem, vel tincidunt magna lorem ut elit.",
+    "images": [
+      "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1549117121-48359e2c943c?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1528642463367-1798df634f19?q=80&w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518107616385-bd2f836c3a3a?q=80&w=800&auto=format&fit=crop"
+    ]
+  }
+}

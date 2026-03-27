@@ -3,7 +3,8 @@ import OpsSidebar from "@/components/dashboard/OpsSidebar";
 import OpsHeader from "@/components/dashboard/OpsHeader";
 import OpsOverview from "@/components/dashboard/OpsOverview";
 import RoomsStatus from "@/components/dashboard/RoomsStatus";
-import { Info, User, Calendar } from "lucide-react";
+import DashboardFooter from "@/components/dashboard/DashboardFooter";
+import { User, Calendar } from "lucide-react";
 
 export const metadata = {
   title: "Hotel Operations Dashboard | BOLTTrip",
@@ -15,7 +16,7 @@ export default function OperationsDashboardPage() {
     <div className="min-h-screen bg-[#f8f9fb]">
       <OpsSidebar />
       
-      <main className="pl-64">
+      <main className="pl-56">
         <OpsHeader />
         
         <div className="p-10">
@@ -147,7 +148,9 @@ export default function OperationsDashboardPage() {
                         </span>
                       </div>
                       <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-3">{item.room}</p>
-                      <p className="text-xs text-gray-500 font-medium italic leading-relaxed">"{item.text}"</p>
+                      <p className="text-xs text-gray-500 font-medium italic leading-relaxed">
+                        {`"${item.text}"`}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -155,6 +158,8 @@ export default function OperationsDashboardPage() {
             </div>
           </div>
         </div>
+
+        <DashboardFooter />
       </main>
     </div>
   );

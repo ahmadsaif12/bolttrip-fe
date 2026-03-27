@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { User, Mail, Lock, ArrowRight, Phone } from "lucide-react";
+import { Mail, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useRegister } from "@/features/auth/hooks/Useauth";
-import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -15,9 +15,9 @@ export default function RegisterPage() {
     password: "",
     re_password: "",
   });
+  
   const [errorMsg, setErrorMsg] = useState("");
   const registerMutation = useRegister();
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,160 +25,98 @@ export default function RegisterPage() {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg("");
+
     if (formData.password !== formData.re_password) {
       setErrorMsg("Passwords do not match");
       return;
     }
     
-    registerMutation.mutate(formData as any, {
+    const payload = {
+      name: `${formData.first_name} ${formData.last_name}`.trim(),
+      email: formData.email,
+      phone: formData.phone_number,
+      password: formData.password,
+      user_type: "traveler", 
+    };
+
+    registerMutation.mutate(payload as any, {
       onSuccess: () => {
-        router.push("/login?registered=true");
+        setIsSubmitted(true); 
       },
       onError: (err: any) => {
-        setErrorMsg(err.message || "Failed to register account.");
+        setErrorMsg(err.response?.data?.detail || "Registration failed.");
       }
     });
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-[#111827]">
-          Join BOLT Trip
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <h2 className="mt-6 text-3xl font-extrabold text-[#111827]">
+          {isSubmitted ? "Check Your Inbox" : "Join BOLT Trip"}
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link href="/login" className="font-medium text-[#FF6D38] hover:text-[#e05b2a]">
-            Sign in
-          </Link>
-        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
-        <div className="bg-white py-10 px-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:rounded-[30px] sm:px-10 border border-gray-100">
-          <form className="space-y-6" onSubmit={handleRegister}>
-            {errorMsg && (
-              <div className="bg-red-50 text-red-500 p-3 rounded-xl text-sm font-medium border border-red-100">
-                {errorMsg}
-              </div>
-            )}
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">First Name</label>
-                <div className="mt-2 relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                    <User size={18} />
-                  </div>
-                  <input
-                    name="first_name"
-                    type="text"
-                    required
-                    value={formData.first_name}
-                    onChange={handleChange}
-                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Last Name</label>
-                <div className="mt-2 relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                    <User size={18} />
-                  </div>
-                  <input
-                    name="last_name"
-                    type="text"
-                    required
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  />
-                </div>
-              </div>
+        <div className="bg-white py-10 px-6 shadow-xl sm:rounded-[30px] border border-gray-100">
+          
+          {errorMsg && (
+            <div className="mb-4 bg-red-50 text-red-500 p-3 rounded-xl text-sm border border-red-100">
+              {errorMsg}
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email address</label>
-              <div className="mt-2 relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                  <Mail size={18} />
-                </div>
-                <input
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  placeholder="you@example.com"
-                />
+          {!isSubmitted ? (
+            <form className="space-y-5" onSubmit={handleRegister}>
+              <div className="grid grid-cols-2 gap-4">
+                <input name="first_name" placeholder="First Name" required onChange={handleChange} className="p-3 border rounded-xl w-full" />
+                <input name="last_name" placeholder="Last Name" required onChange={handleChange} className="p-3 border rounded-xl w-full" />
               </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-              <div className="mt-2 relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                  <Phone size={18} />
-                </div>
-                <input
-                  name="phone_number"
-                  type="tel"
-                  required
-                  value={formData.phone_number}
-                  onChange={handleChange}
-                  className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                />
+              <input name="email" type="email" placeholder="Email Address" required onChange={handleChange} className="p-3 border rounded-xl w-full" />
+              <input name="phone_number" placeholder="Phone Number" required onChange={handleChange} className="p-3 border rounded-xl w-full" />
+              <div className="grid grid-cols-2 gap-4">
+                <input name="password" type="password" placeholder="Password" required onChange={handleChange} className="p-3 border rounded-xl w-full" />
+                <input name="re_password" type="password" placeholder="Confirm Password" required onChange={handleChange} className="p-3 border rounded-xl w-full" />
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Password</label>
-                <div className="mt-2 relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                    <Lock size={18} />
-                  </div>
-                  <input
-                    name="password"
-                    type="password"
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  />
+              <button type="submit" disabled={registerMutation.isPending} className="w-full bg-[#FF6D38] text-white py-3 rounded-xl font-bold flex items-center justify-center transition-all hover:bg-[#e85a2a]">
+                {registerMutation.isPending ? "Creating Account..." : "Create Account"} <ArrowRight className="ml-2" size={18} />
+              </button>
+              <p className="text-center text-sm text-gray-500">
+                Already have an account? <Link href="/login" className="text-[#FF6D38] font-medium">Sign in</Link>
+              </p>
+            </form>
+          ) : (
+            <div className="text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="bg-green-50 p-6 rounded-full">
+                  <Mail size={50} className="text-green-500 animate-bounce" />
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-                <div className="mt-2 relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                    <Lock size={18} />
-                  </div>
-                  <input
-                    name="re_password"
-                    type="password"
-                    required
-                    value={formData.re_password}
-                    onChange={handleChange}
-                    className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  />
-                </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-gray-900">Verification Link Sent!</h3>
+                <p className="text-gray-500">
+                  We've sent a verification link to{" "}
+                  <span className="font-semibold text-gray-800">{formData.email}</span>.
+                </p>
+                <p className="text-sm text-gray-400">
+                  Click the link in the email to activate your account, then come back here to sign in.
+                </p>
               </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={registerMutation.isPending}
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-[#FF6D38] hover:bg-[#e05b2a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6D38] transition-colors disabled:opacity-75 mt-6"
+              <Link
+                href="/login"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-[#FF6D38] py-3 font-bold text-white transition-all hover:bg-[#e85a2a]"
               >
-                {registerMutation.isPending ? "Creating account..." : "Register"}
-                {!registerMutation.isPending && <ArrowRight size={18} className="ml-2" />}
+                Go to Sign In <ArrowRight className="ml-2" size={18} />
+              </Link>
+              <button 
+                onClick={() => setIsSubmitted(false)} 
+                className="text-[#FF6D38] text-sm font-medium hover:underline"
+              >
+                Entered wrong email? Change it here
               </button>
             </div>
-          </form>
+          )}
         </div>
       </div>
     </div>

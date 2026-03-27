@@ -3,6 +3,9 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { ENDPOINTS } from "@/service/endpoints";
 
+const API_BASE_URL = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "";
+const apiUrl = (path: string) => (API_BASE_URL ? new URL(path, API_BASE_URL).toString() : path);
+
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
@@ -20,7 +23,7 @@ export const authOptions: AuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
 
         try {
-          const res = await fetch(ENDPOINTS.auth.login, {
+          const res = await fetch(apiUrl(ENDPOINTS.auth.login), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -29,7 +32,22 @@ export const authOptions: AuthOptions = {
             }),
           });
 
-          if (!res.ok) return null;
+          if (!res.ok) {
+            let detail = "";
+            try {
+              const data = await res.json();
+              detail = String((data as any)?.detail ?? (data as any)?.message ?? "");
+            } catch {
+              // ignore
+            }
+
+            // If backend blocks login until email is verified, surface a stable error code
+            if (res.status === 403 && /verify|verified|activate|activation/i.test(detail)) {
+              throw new Error("unverified");
+            }
+
+            return null;
+          }
 
           const data = await res.json();
 
@@ -41,7 +59,8 @@ export const authOptions: AuthOptions = {
             accessToken: data.access,
             refreshToken: data.refresh,
           };
-        } catch {
+        } catch (err) {
+          if (err instanceof Error && err.message === "unverified") throw err;
           return null;
         }
       },
@@ -52,7 +71,7 @@ export const authOptions: AuthOptions = {
     async signIn({ user, account }) {
       if (account?.provider === "google") {
         try {
-          const res = await fetch(ENDPOINTS.auth.googleSync, {
+          const res = await fetch(apiUrl(ENDPOINTS.auth.googleSync), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

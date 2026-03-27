@@ -1,119 +1,109 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { useLogin } from "@/features/auth/hooks/Useauth";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const verified = searchParams.get("verified");
+  const error = searchParams.get("error");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-  const loginMutation = useLogin();
-  const router = useRouter();
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const loginMutation = useLogin();
+
+  const banner = useMemo(() => {
+    if (verified === "1") return { type: "success" as const, text: "Email verified. You can sign in now." };
+    if (error === "CredentialsSignin") return { type: "error" as const, text: "Invalid email or password." };
+    if (error === "unverified") return { type: "error" as const, text: "Please verify your email first." };
+    return null;
+  }, [error, verified]);
+
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg("");
+
     loginMutation.mutate(
       { email, password },
       {
-        onSuccess: () => {
-          router.push("/");
-        },
-        onError: (err: any) => {
-          setErrorMsg(err.message || "Failed to login. Please check credentials.");
-        }
+        onSuccess: () => router.push("/dashboard"),
+        onError: (err: any) => setErrorMsg(err?.message || "Login failed."),
       }
     );
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-[#111827]">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{" "}
-          <Link href="/register" className="font-medium text-[#FF6D38] hover:text-[#e05b2a]">
-            create a new account
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <h2 className="mt-6 text-3xl font-extrabold text-[#111827]">Sign In</h2>
+        <p className="mt-2 text-sm text-gray-500">
+          New here?{" "}
+          <Link href="/register" className="text-[#FF6D38] font-medium">
+            Create an account
           </Link>
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-10 px-6 shadow-[0_8px_30px_rgb(0,0,0,0.06)] sm:rounded-[30px] sm:px-10 border border-gray-100">
-          <form className="space-y-6" onSubmit={handleLogin}>
-            {errorMsg && (
-              <div className="bg-red-50 text-red-500 p-3 rounded-xl text-sm font-medium border border-red-100">
-                {errorMsg}
-              </div>
-            )}
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email address</label>
-              <div className="mt-2 relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                  <Mail size={18} />
-                </div>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  placeholder="you@example.com"
-                />
-              </div>
+        <div className="bg-white py-10 px-6 shadow-xl sm:rounded-[30px] border border-gray-100">
+          {banner && (
+            <div
+              className={[
+                "mb-4 p-3 rounded-xl text-sm border",
+                banner.type === "success"
+                  ? "bg-green-50 text-green-700 border-green-100"
+                  : "bg-red-50 text-red-600 border-red-100",
+              ].join(" ")}
+            >
+              {banner.text}
             </div>
+          )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <div className="mt-2 relative">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                  <Lock size={18} />
-                </div>
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full pl-11 pr-3 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF6D38] focus:border-[#FF6D38] sm:text-sm transition-colors"
-                  placeholder="••••••••"
-                />
-              </div>
+          {errorMsg && (
+            <div className="mb-4 bg-red-50 text-red-500 p-3 rounded-xl text-sm border border-red-100">
+              {errorMsg}
             </div>
+          )}
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-[#FF6D38] focus:ring-[#FF6D38] border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
+          <form className="space-y-5" onSubmit={onSubmit}>
+            <input
+              name="email"
+              type="email"
+              placeholder="Email Address"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="p-3 border rounded-xl w-full"
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="p-3 border rounded-xl w-full"
+            />
 
-              <div className="text-sm">
-                <a href="#" className="font-medium text-[#004E89] hover:underline">
-                  Forgot password?
-                </a>
-              </div>
-            </div>
+            <button
+              type="submit"
+              disabled={loginMutation.isPending}
+              className="w-full bg-[#FF6D38] text-white py-3 rounded-xl font-bold flex items-center justify-center transition-all hover:bg-[#e85a2a]"
+            >
+              {loginMutation.isPending ? "Signing In..." : "Sign In"} <ArrowRight className="ml-2" size={18} />
+            </button>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loginMutation.isPending}
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-[#FF6D38] hover:bg-[#e05b2a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF6D38] transition-colors disabled:opacity-75 mt-4"
-              >
-                {loginMutation.isPending ? "Signing in..." : "Sign in"}
-                {!loginMutation.isPending && <ArrowRight size={18} className="ml-2" />}
-              </button>
+            <div className="flex items-center justify-between text-sm">
+              <Link href="/forgot-password" className="text-gray-500 hover:text-gray-700">
+                Forgot password?
+              </Link>
             </div>
           </form>
         </div>

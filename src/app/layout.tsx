@@ -15,6 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <script src="https://khalti.s3.amazonaws.com/KPG/dist/2.0.0/khalti-checkout.iffe.js"></script>
+      </head>
       <body className="flex min-h-screen flex-col bg-white">
         <Providers> 
           <AppChrome>{children}</AppChrome>

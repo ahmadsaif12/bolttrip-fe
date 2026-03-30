@@ -2,27 +2,42 @@
 
 import { MapPin, Search, ArrowRightLeft } from "lucide-react";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { FlightsService } from "@/service/flights.service";
+import { useRouter } from "next/navigation";
 
 export default function FlightsSearchBar() {
+  const router = useRouter();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [traveler, setTraveler] = useState("");
+  const [traveler, setTraveler] = useState("1");
   const [activeTab, setActiveTab] = useState("Round Trip");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const searchMutation = useMutation({
-    mutationFn: (searchData: any) => FlightsService.searchFlights(searchData),
-    onSuccess: (data) => console.log("Flight search results:", data),
-    onError: (error) => console.error("Search failed:", error)
-  });
+  const handleSearch = async () => {
+    if (!from || !to || !departureDate) {
+      alert("Please fill in all required fields");
+      return;
+    }
 
-  const handleSearch = () => {
-    searchMutation.mutate({
-      from, to, departureDate, returnDate, traveler, type: activeTab
+    setIsLoading(true);
+    
+    // Create search query parameters
+    const params = new URLSearchParams({
+      from,
+      to,
+      departureDate,
+      traveler,
+      type: activeTab,
     });
+
+    if (returnDate) {
+      params.append("returnDate", returnDate);
+    }
+
+    // Navigate to results page with search parameters
+    router.push(`/flights/results?${params.toString()}`);
+    setIsLoading(false);
   };
 
   return (
@@ -119,8 +134,10 @@ export default function FlightsSearchBar() {
         {/* Traveler */}
         <div className="flex-[0.5] w-full">
           <input
-            type="text"
-            placeholder="Traveler"
+            type="number"
+            placeholder="Travelers"
+            min="1"
+            max="9"
             value={traveler}
             onChange={(e) => setTraveler(e.target.value)}
             className="w-full h-[60px] px-6 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#FF6D38] text-base font-medium text-gray-800 placeholder-gray-500 text-center"
@@ -130,10 +147,10 @@ export default function FlightsSearchBar() {
         {/* Search Button */}
         <button 
           onClick={handleSearch}
-          disabled={searchMutation.isPending}
+          disabled={isLoading}
           className="flex-shrink-0 bg-[#FF6D38] text-white h-[60px] px-8 rounded-2xl flex items-center justify-center hover:bg-[#e05b2a] transition-colors shadow-lg font-bold text-lg disabled:opacity-75"
         >
-          {searchMutation.isPending ? "Searching..." : (
+          {isLoading ? "Searching..." : (
             <>Search Flights <Search size={20} className="ml-2" /></>
           )}
         </button>

@@ -8,13 +8,13 @@ import AdminRightSidebar from "@/components/dashboard/AdminRightSidebar";
 
 export default function PackagesTablePage() {
   const columns = [
-    { key: "id", label: "Package ID" },
-    { key: "name", label: "Package Name" },
-    { key: "destination", label: "Destination" },
-    { key: "price", label: "Price" },
-    { key: "duration", label: "Duration" },
+    { key: "id" as const, label: "Package ID" },
+    { key: "name" as const, label: "Package Name" },
+    { key: "destination" as const, label: "Destination" },
+    { key: "price" as const, label: "Price" },
+    { key: "duration" as const, label: "Duration" },
     { 
-      key: "status", 
+      key: "status" as const, 
       label: "Status",
       render: (val: string) => (
         <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
@@ -24,7 +24,7 @@ export default function PackagesTablePage() {
         </span>
       )
     },
-  ];
+  ] as const;
 
   return (
     <div className="min-h-screen bg-[#f8f9fb]">
@@ -32,7 +32,7 @@ export default function PackagesTablePage() {
       <main className="pl-64 pr-0 xl:pr-80">
         <AdminHeader />
         <div className="p-10">
-          <DataTable title="All Packages" columns={columns} data={dashboardData.packages} />
+          <DataTable title="All Packages" columns={columns as any} data={dashboardData.packages} />
         </div>
       </main>
       <AdminRightSidebar />

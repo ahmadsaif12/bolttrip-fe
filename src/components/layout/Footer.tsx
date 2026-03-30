@@ -92,10 +92,10 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-12 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-300">
-          <p>© 2025 Leadmark Info Sys. All Rights Reserved. | Site by Yubraj Khadka</p>
+          <p>© 2025 Leadmark Info Sys. All Rights Reserved. | Site by Saif Ahmad</p>
           <div className="flex items-center gap-8">
             <span className="cursor-pointer hover:text-[#0b3155] transition-colors">$ USD</span>
-            <span className="cursor-pointer hover:text-[#0b3155] transition-colors">United States</span>
+            <span className="cursor-pointer hover:text-[#0b3155] transition-colors">NEPAL</span>
           </div>
         </div>
       </div>

@@ -17,6 +17,7 @@ export interface Flight {
   price: number;
   originalPrice?: number;
   seats?: number;
+  flight_number: string;
   image?: string;
 }
 

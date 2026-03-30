@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Explore Your Dream Destinations",
 };
 
+import Script from "next/script";
+
 export default function RootLayout({
   children,
 }: {
@@ -15,13 +17,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <head>
-        <script src="https://khalti.s3.amazonaws.com/KPG/dist/2.0.0/khalti-checkout.iffe.js"></script>
-      </head>
       <body className="flex min-h-screen flex-col bg-white">
         <Providers> 
           <AppChrome>{children}</AppChrome>
         </Providers>
+        <Script
+          src="https://khalti.s3.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

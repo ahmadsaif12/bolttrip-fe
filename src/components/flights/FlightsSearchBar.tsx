@@ -14,147 +14,94 @@ export default function FlightsSearchBar() {
   const [activeTab, setActiveTab] = useState("Round Trip");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSearch = async () => {
-    if (!from || !to || !departureDate) {
-      alert("Please fill in all required fields");
-      return;
-    }
-
+  const handleSearch = () => {
+    if (!from || !to || !departureDate) return;
     setIsLoading(true);
-    
-    // Create search query parameters
-    const params = new URLSearchParams({
-      from,
-      to,
-      departureDate,
-      traveler,
-      type: activeTab,
-    });
-
-    if (returnDate) {
-      params.append("returnDate", returnDate);
-    }
-
-    // Navigate to results page with search parameters
+    const params = new URLSearchParams({ from, to, departureDate, traveler, type: activeTab });
+    if (returnDate) params.append("returnDate", returnDate);
     router.push(`/flights/results?${params.toString()}`);
     setIsLoading(false);
   };
 
   return (
-    <div className="max-w-[1000px] mx-auto px-6 -mt-20 relative z-30 mb-20">
-      
-      {/* Tabs */}
-      <div className="flex justify-center ml-24">
-        <div className="bg-[#FF6D38] text-white flex rounded-t-3xl overflow-hidden shadow-lg">
-          <button 
-            onClick={() => setActiveTab("One Way")}
-            className={`px-8 py-4 font-semibold text-sm border-r border-[#FF8F66] transition-colors ${activeTab === 'One Way' ? 'bg-white text-[#FF6D38] rounded-tr-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.1)] relative z-10' : 'bg-[#FF6D38]'}`}
-          >
-            One Way
-          </button>
-          <button 
-            onClick={() => setActiveTab("Round Trip")}
-            className={`px-12 py-4 font-bold text-sm transition-colors ${activeTab === 'Round Trip' ? 'bg-white text-[#FF6D38] rounded-t-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.1)] relative z-10' : 'bg-[#FF6D38] font-semibold'}`}
-          >
-            Round Trip
-          </button>
-          <button 
-            onClick={() => setActiveTab("Multi City")}
-            className={`px-8 py-4 font-semibold text-sm border-l border-[#FF8F66] transition-colors ${activeTab === 'Multi City' ? 'bg-white text-[#FF6D38] rounded-tl-3xl shadow-[0_-4px_10px_rgba(0,0,0,0.1)] relative z-10' : 'bg-[#FF6D38]'}`}
-          >
-            Multi City
-          </button>
+    <div className="max-w-[1100px] mx-auto px-4 -mt-16 relative z-30 mb-20">
+      <div className="flex justify-center mb-0 relative z-40">
+        <div className="bg-[#FF6D38] p-1 flex rounded-full shadow-lg">
+          {["One Way", "Round Trip", "Multi City"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all ${activeTab === tab ? "bg-white text-[#FF6D38]" : "text-white hover:bg-[#e05b2a]"
+                }`}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Main Bar */}
-      <div className="bg-white rounded-[32px] p-4 shadow-[0_10px_40px_rgb(0,0,0,0.08)] border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-3 relative z-20">
-        
-        {/* From -> To */}
-        <div className="flex-1 w-full flex items-center relative gap-2">
-          {/* From */}
-          <div className="flex-1 relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-800">
-              <MapPin size={20} />
-            </div>
+      <div className="bg-white rounded-[40px] p-6 shadow-2xl border border-gray-100 flex flex-col lg:flex-row items-center gap-4">
+        <div className="flex flex-1 w-full items-center gap-0 relative">
+          <div className="relative flex-1">
+            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="From?"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="w-full h-[60px] pl-12 pr-4 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#FF6D38] text-base font-medium text-gray-800 placeholder-gray-500"
+              className="w-full h-[60px] pl-12 pr-6 rounded-l-2xl border border-r-0 border-gray-200 focus:outline-none focus:ring-1 focus:ring-orange-500"
             />
           </div>
 
-          {/* Swap icon */}
-          <div 
-            onClick={() => { const temp = from; setFrom(to); setTo(temp); }}
-            className="w-8 h-8 rounded-full border border-orange-300 bg-white shadow-sm flex items-center justify-center text-[#FF6D38] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer hover:bg-orange-50"
+          <button
+            onClick={() => { const t = from; setFrom(to); setTo(t); }}
+            className="absolute left-1/2 -translate-x-1/2 bg-white border border-gray-200 p-2 rounded-full shadow-sm z-10 hover:text-orange-500"
           >
             <ArrowRightLeft size={16} />
-          </div>
+          </button>
 
-          {/* To */}
-          <div className="flex-1 relative">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-800">
-              <MapPin size={20} />
-            </div>
+          <div className="relative flex-1">
+            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             <input
               type="text"
               placeholder="To?"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="w-full h-[60px] pl-12 pr-4 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#FF6D38] text-base font-medium text-gray-800 placeholder-gray-500"
+              className="w-full h-[60px] pl-12 pr-6 rounded-r-2xl border border-gray-200 focus:outline-none focus:ring-1 focus:ring-orange-500"
             />
           </div>
         </div>
 
-        {/* Departure Date */}
-        <div className="flex-[0.5] w-full">
+        <div className="flex flex-1 w-full gap-3">
           <input
-            type="text"
-            placeholder="Departure Date"
+            type="date"
             value={departureDate}
             onChange={(e) => setDepartureDate(e.target.value)}
-            className="w-full h-[60px] px-6 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#FF6D38] text-base font-medium text-gray-800 placeholder-gray-500 text-center"
+            className="flex-1 h-[60px] px-4 rounded-2xl border border-gray-200 outline-none"
           />
-        </div>
-
-        {/* Return Date */}
-        <div className="flex-[0.5] w-full">
-          <input
-            type="text"
-            placeholder="Return Date"
-            value={returnDate}
-            onChange={(e) => setReturnDate(e.target.value)}
-            className="w-full h-[60px] px-6 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#FF6D38] text-base font-medium text-gray-800 placeholder-gray-500 text-center"
-          />
-        </div>
-
-        {/* Traveler */}
-        <div className="flex-[0.5] w-full">
+          {activeTab === "Round Trip" && (
+            <input
+              type="date"
+              value={returnDate}
+              onChange={(e) => setReturnDate(e.target.value)}
+              className="flex-1 h-[60px] px-4 rounded-2xl border border-gray-200 outline-none"
+            />
+          )}
           <input
             type="number"
-            placeholder="Travelers"
-            min="1"
-            max="9"
             value={traveler}
             onChange={(e) => setTraveler(e.target.value)}
-            className="w-full h-[60px] px-6 rounded-2xl border border-gray-300 focus:outline-none focus:border-[#FF6D38] text-base font-medium text-gray-800 placeholder-gray-500 text-center"
+            className="w-20 h-[60px] text-center rounded-2xl border border-gray-200 outline-none"
           />
         </div>
 
-        {/* Search Button */}
-        <button 
+        <button
           onClick={handleSearch}
           disabled={isLoading}
-          className="flex-shrink-0 bg-[#FF6D38] text-white h-[60px] px-8 rounded-2xl flex items-center justify-center hover:bg-[#e05b2a] transition-colors shadow-lg font-bold text-lg disabled:opacity-75"
+          className="w-full lg:w-auto bg-[#FF6D38] text-white h-[60px] px-10 rounded-2xl font-bold text-lg hover:bg-orange-600 shadow-md"
         >
-          {isLoading ? "Searching..." : (
-            <>Search Flights <Search size={20} className="ml-2" /></>
-          )}
+          {isLoading ? "..." : "Search"}
         </button>
-
       </div>
     </div>
   );
